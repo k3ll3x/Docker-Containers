@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}       # Change to your desired DB name
+      POSTGRES_USER: ${DB_USER}      # Use environment variable for user
+      POSTGRES_PASSWORD: ${DB_PASS}   # Use environment variable for password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

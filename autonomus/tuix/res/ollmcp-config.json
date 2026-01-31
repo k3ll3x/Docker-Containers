@@ -1,0 +1,62 @@
+{
+  "model": "qwen2.5:7b",
+  "enabledTools": {
+    "obsidian.obsidian_list_files_in_dir": true,
+    "obsidian.obsidian_list_files_in_vault": true,
+    "obsidian.obsidian_get_file_contents": true,
+    "obsidian.obsidian_simple_search": true,
+    "obsidian.obsidian_patch_content": true,
+    "obsidian.obsidian_append_content": true,
+    "obsidian.obsidian_delete_file": true,
+    "obsidian.obsidian_complex_search": true,
+    "obsidian.obsidian_batch_get_file_contents": true,
+    "obsidian.obsidian_get_periodic_note": true,
+    "obsidian.obsidian_get_recent_periodic_notes": true,
+    "obsidian.obsidian_get_recent_changes": true,
+    "duckduckgo.search": true,
+    "duckduckgo.fetch_content": true,
+    "filesystem.read_file": true,
+    "filesystem.read_multiple_files": true,
+    "filesystem.write_file": true,
+    "filesystem.edit_file": true,
+    "filesystem.create_directory": true,
+    "filesystem.list_directory": true,
+    "filesystem.directory_tree": true,
+    "filesystem.move_file": true,
+    "filesystem.search_files": true,
+    "filesystem.get_file_info": true,
+    "filesystem.list_allowed_directories": true
+  },
+  "contextSettings": {
+    "retainContext": true
+  },
+  "modelSettings": {
+    "thinkingMode": true,
+    "showThinking": false
+  },
+  "modelConfig": {
+    "system_prompt": "",
+    "num_keep": null,
+    "seed": null,
+    "num_predict": null,
+    "top_k": null,
+    "top_p": null,
+    "min_p": null,
+    "typical_p": null,
+    "repeat_last_n": null,
+    "temperature": null,
+    "repeat_penalty": null,
+    "presence_penalty": null,
+    "frequency_penalty": null,
+    "stop": null,
+    "num_ctx": null,
+    "num_batch": null
+  },
+  "displaySettings": {
+    "showToolExecution": true,
+    "showMetrics": false
+  },
+  "hilSettings": {
+    "enabled": false
+  }
+}

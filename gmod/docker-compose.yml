@@ -1,0 +1,13 @@
+services:
+  gmod:
+    image: ceifa/gmod-server:latest
+    ports:
+      - "27015:27015/udp"
+      - "27015:27015/tcp"
+#    volumes:
+#      - ${ADDONS}:/home/gmod/server/garrysmod/addons
+#      - ${DUPES}:/home/gmod/server/garrysmod/dupes
+#      - ${GAMEMODES}:/home/gmod/server/garrysmod/gamemodes
+    env_file:
+      - stalker
+    restart: unless-stopped

@@ -1,0 +1,24 @@
+services:
+  tuix:
+    tty: true
+    stdin_open: true
+    container_name: tuix
+    hostname: tuix
+    #privileged: true
+    build:
+      context: tuix
+      dockerfile: ${DOCKERFILE-Dockerfile}
+#    pid: host
+    entrypoint: ${ENTRY-bash}
+#    environment:
+#      - DISPLAY=:0
+#      - UDEV=1
+#      - PGID=1000
+#      - PUID=1000
+#      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${SRC-..}:/home/atrahasis/repo
+      - ./tuix/res/:/home/atrahasis/res
+      - ./tuix/res/config.toml:/home/atrahasis/.codex/config.toml
+      - ./tuix/res/ollmcp-config.json:/home/atrahasis/.config/ollmcp/config.json

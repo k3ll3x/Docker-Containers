@@ -1,0 +1,28 @@
+services:
+  devenv:
+    tty: true
+    container_name: archdev
+    privileged: true
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE-dockerfile}
+    pid: host
+    entrypoint: ${ENTRY-bash}
+    environment:
+      - DISPLAY=:0
+      - UDEV=1
+      - PGID=1000
+      - PUID=1000
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
+    volumes:
+      - ${SRC-..}:/home/devu/repo
+      - /tmp/.X11-unix:/tmp/.X11-unix
+#      - $HOME/.ssh:/root/.ssh
+#      - "/var/run/docker.sock:/var/run/docker.sock"
+#      - /tmp/pulseaudio.socket:/tmp/pulseaudio.socket
+    devices:
+#      - /dev/dri/card0:/dev/dri/card0
+#      - /dev/dri/card1:/dev/dri/card1
+#      - /dev/snd:/dev/snd
+      - /dev/ttyACM0:/dev/ttyACM0
+      - /dev/bus/usb:/dev/bus/usb

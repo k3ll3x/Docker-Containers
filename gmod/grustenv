@@ -1,0 +1,9 @@
+#GAMEMODES=/home/zen/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/gamemodes
+GAMEMODES=./gamemodes
+ADDONS=/home/zen/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/addons
+DUPES=/home/zen/.local/share/Steam/steamapps/common/GarrysMod/garrysmod/dupes
+HOSTNAME="La Eriza GRUST"
+GAMEMODE=rustix
+MAXPLAYERS=4
+MAP=gm_flatgrass
+ARGS="+host_workshop_collection 3573378430"

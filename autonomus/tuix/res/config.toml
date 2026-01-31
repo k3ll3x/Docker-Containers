@@ -1,0 +1,50 @@
+model = "llama3.1"
+model_provider = "ollama"
+
+[tools]
+view_image_tool = true
+web_search_request = true
+
+[features]
+# Leave this table empty to accept defaults. Set explicit booleans to opt in/out.
+unified_exec = false
+streamable_shell = false
+rmcp_client = false
+apply_patch_freeform = false
+view_image_tool = true
+web_search_request = true
+experimental_sandbox_command_assessment = false
+ghost_commit = false
+enable_experimental_windows_sandbox = false
+
+[mcp_servers]
+
+# --- Example: STDIO transport ---
+# [mcp_servers.docs]
+# command = "docs-server"                 # required
+# args = ["--port", "4000"]               # optional
+# env = { "API_KEY" = "value" }           # optional key/value pairs copied as-is
+# env_vars = ["ANOTHER_SECRET"]            # optional: forward these from the parent env
+# cwd = "/path/to/server"                 # optional working directory override
+# startup_timeout_sec = 10.0               # optional; default 10.0 seconds
+# # startup_timeout_ms = 10000              # optional alias for startup timeout (milliseconds)
+# tool_timeout_sec = 60.0                  # optional; default 60.0 seconds
+# enabled_tools = ["search", "summarize"]  # optional allow-list
+# disabled_tools = ["slow-tool"]           # optional deny-list (applied after allow-list)
+
+# --- Example: Streamable HTTP transport ---
+# [mcp_servers.github]
+# url = "https://github-mcp.example.com/mcp"  # required
+# bearer_token_env_var = "GITHUB_TOKEN"        # optional; Authorization: Bearer <token>
+# http_headers = { "X-Example" = "value" }    # optional static headers
+# env_http_headers = { "X-Auth" = "AUTH_ENV" } # optional headers populated from env vars
+# startup_timeout_sec = 10.0                   # optional
+# tool_timeout_sec = 60.0                      # optional
+# enabled_tools = ["list_issues"]             # optional allow-list
+
+[model_providers]
+# --- Example: Local OSS (e.g., Ollama-compatible) ---
+[model_providers.ollama]
+name = "Ollama"
+base_url = "http://ollama:11434/v1"
+wire_api = "chat"

@@ -1,0 +1,43 @@
+{
+  "mcpServers": {
+    "obsidian": {
+      "command": "dockerx",
+      "disabled": false,
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "OBSIDIAN_HOST=host.docker.internal",
+        "-e",
+        "OBSIDIAN_API_KEY=",
+        "mcp/obsidian"
+      ],
+      "env": {
+        "OBSIDIAN_HOST": "host.docker.internal",
+        "OBSIDIAN_API_KEY": ""
+      }
+    },
+    "duckduckgo": {
+      "command": "dockerx",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "mcp/duckduckgo"
+      ]
+    },
+    "filesystem": {
+      "command": "dockerx",
+      "disabled": false,
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--mount", "type=bind,src=/home/nuvhandra/Documents/docker/autonomus/.tmp/,dst=/repo",
+        "mcp/filesystem",
+        "/repo"
+      ]
+    }
+  }
+}

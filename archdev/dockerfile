@@ -1,0 +1,89 @@
+# Use the latest Arch Linux base image
+FROM archlinux:latest AS archdev
+
+ARG username="devu"
+ARG userhome="/home/devu"
+ARG srcpath="/src"
+
+ENV HOME ${userhome}
+
+# Update package repositories and install base dependencies
+#        xorg-server-utils \
+RUN pacman-db-upgrade
+# RUN pacman -Syyu --noconfirm
+RUN pacman -Syu --noconfirm
+RUN pacman -Sy --noconfirm \
+        base-devel \
+        git \
+        cmake \
+        make \
+        gcc \
+        clang \
+	gdb \
+	icu \
+	btop \
+        llvm \
+        lld \
+        python \
+        python-pip \
+        curl \
+        unzip \
+        xorg-server \
+        xorg-xinit \
+        xorg-xhost \
+        xorg-xauth \
+        xorg-xrandr \
+        xorg-xset \
+        xorg-xdpyinfo \
+        xorg-xwininfo \
+        xterm \
+        mesa \
+        libxcursor \
+        libxinerama \
+        libxrandr \
+        libxcomposite \
+        libgl \
+        freetype2 \
+        libcurl-gnutls \
+        hicolor-icon-theme \
+        desktop-file-utils \
+        shared-mime-info \
+	alsa-lib \
+	pulseaudio \
+        sudo \
+	curl \
+        fish
+
+#Rust
+RUN pacman -Sy rust rustup --noconfirm
+RUN rustup toolchain install stable
+RUN rustup default stable
+
+#Emscripten
+RUN pacman -Sy emscripten --noconfirm
+RUN ln -s /usr/lib/emscripten/emcc /usr/local/bin
+RUN ln -s /usr/lib/emscripten/emcc.py /usr/local/bin
+
+RUN chsh -s /usr/bin/fish
+
+# User
+RUN mkdir -p ${userhome}
+RUN mkdir -p ${userhome}${srcpath}
+RUN groupadd -r ${username}
+RUN useradd -rm -G wheel -d ${userhome} -s /usr/bin/fish -g ${username} -u 1000 ${username}
+RUN chown -R ${username}:${username} ${userhome}
+RUN chown -R ${username}:${username} ${userhome}${srcpath}
+RUN echo ${username}:${username} | chpasswd
+
+# Allow members of the wheel group to use sudo
+RUN echo "$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+#RUN systemctl start ssh
+CMD ["/usr/sbin/sshd","-D"]
+EXPOSE 22
+
+USER ${username}
+ENV fish_greeting="Lasciate ogni speranza, voi ch'entrate"
+WORKDIR ${userhome}${srcpath}
+
+ENTRYPOINT ["/usr/bin/fish", "-c"]

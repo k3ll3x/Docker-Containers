@@ -1,0 +1,14 @@
+services:
+  qemu:
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      network: host
+    container_name: qemu
+#    privileged: true
+    command: /usr/bin/fish
+    devices:
+    - ${DEVICE}:/dev/sdb
+#    volumes:
+#    - ${VOLUME}:/images

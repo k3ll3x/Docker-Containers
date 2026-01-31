@@ -1,0 +1,13 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    volumes:
+      - "${UPLOAD_PATH}:/srv"
+      - ./.filebrowser.db:/database/filebrowser.db
+      - ./settings.json:/config/settings.json
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 8095:80

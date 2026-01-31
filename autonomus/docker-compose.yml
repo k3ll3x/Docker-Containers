@@ -1,0 +1,17 @@
+services:
+  ollama:
+    extends:
+      file: ollama.yml
+      service: ollama
+
+  tuix:
+    extends:
+      file: tuix.yml
+      service: tuix
+      network_mode: "host"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
+volumes:
+  ollama_data:

@@ -1,0 +1,15 @@
+# Use a lightweight Python image as the base image
+FROM python:3.12
+
+# Install any necessary system packages (if needed)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN pip install pipx
+RUN pipx ensurepath
+#RUN pipx install git+https://github.com/paulrobello/parllama
+
+#ENTRYPOINT ["parllama", "-u", "http://ollama:111434"]
+ENTRYPOINT ["/bin/bash"]

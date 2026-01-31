@@ -1,0 +1,5 @@
+HOSTNAME="La Eriza Stalker"
+GAMEMODE=darkrp
+MAXPLAYERS=4
+MAP=rp_stalker
+ARGS="+host_workshop_collection 1545552004"
