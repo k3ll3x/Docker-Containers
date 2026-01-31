@@ -232,3 +232,216 @@ Parallel (6 concurrent): 45-60 minutes
 - ✅ Dynamic growth up to 200GB if needed
 
 **Your 1-2TB SSD handles this easily.** Start with `deepseek-coder-v2:lite-instruct-q5_K_M` (14GB) for immediate DevOps productivity, then add others as needed. WSL2 + Docker Desktop will consume ~95GB total - well within your P16's capabilities.
+
+---
+
+# VScode integration
+
+## Complete VSCode + Ollama Setup for Your P16 (WSL2 + Models)
+
+Here's your **optimized setup** integrating all 6 recommended models with VSCode on your ThinkPad P16 Gen 2.
+
+## **1. Prerequisites (5 minutes)**
+
+```powershell
+# WSL2 Ubuntu (already done)
+wsl -d Ubuntu-22.04
+
+# Verify Ollama Docker with GPU
+docker ps | grep ollama
+# Should show container running on port 11434
+
+# Test models are downloaded
+ollama list
+```
+
+## **2. VSCode Extensions (Continue.dev - Best for DevOps)**
+
+### Install Extensions:
+```
+1. Continue (main Ollama integration)          [continue.continue]
+2. YAML (Ansible/Helm support)                 [redhat.vscode-yaml] 
+3. Dev Containers (WSL2 development)           [ms-vscode-remote.remote-containers]
+4. Docker (registry management)                [ms-azuretools.vscode-docker]
+5. Kubernetes (k3s/ArgoCD)                     [ms-kubernetes-tools.vscode-kubernetes-tools]
+```
+
+**Ctrl+Shift+X** → Search "Continue" → Install
+
+## **3. Continue.dev Configuration**
+
+Create `~/.continue/config.json` in WSL2:
+
+```json
+{
+  "models": [
+    {
+      "title": "DeepSeek Coder V2 (Primary)",
+      "provider": "ollama",
+      "model": "deepseek-coder-v2:lite-instruct-q5_K_M",
+      "roles": ["coder"]
+    },
+    {
+      "title": "Phi-3.5 MoE (Fast Reasoning)", 
+      "provider": "ollama",
+      "model": "phi3.5:moe-instruct-q8_0",
+      "roles": ["agent"]
+    },
+    {
+      "title": "Llama 3.2 Vision (UI Debug)",
+      "provider": "ollama",
+      "model": "llama3.2:11b-vision-instruct-q6_K",
+      "roles": ["inline"]
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "CodeLlama Autocomplete",
+    "provider": "ollama", 
+    "model": "codellama:13b-instruct-q5_K_M"
+  },
+  "customCommands": [
+    {
+      "name": "ansible-playbook",
+      "prompt": "Generate an Ansible playbook for {{ $SELECTION }} following my k3s-homelab project structure with inventory/hosts.yml format",
+      "description": "Create Ansible playbook from selection"
+    },
+    {
+      "name": "argocd-fix",
+      "prompt": "Analyze this ArgoCD error and generate sync command: {{ $SELECTION }}",
+      "description": "Fix ArgoCD sync issues" 
+    }
+  ]
+}
+```
+
+## **4. VSCode Settings (settings.json)**
+
+Add to VSCode `settings.json` (Ctrl+, → Open Settings JSON):
+
+```json
+{
+  "continue.defaultModel": "DeepSeek Coder V2 (Primary)",
+  "continue.enableAutocompletions": true,
+  "continue.telemetryEnabled": false,
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": [".github/workflows/**"],
+    "https://json.schemastore.org/ansible.json": ["**/*.yml", "**/*.yaml"]
+  },
+  "docker.showStartNotification": false,
+  "remote.WSL.fileWatcher.polling": true
+}
+```
+
+## **5. Project-Specific Setup (.vscode folder)**
+
+In your `k3s-homelab/` root, create:
+
+```
+k3s-homelab/
+├── .vscode/
+│   ├── settings.json
+│   └── continue.json          # Project-specific model config
+└── ... (existing files)
+```
+
+**`.vscode/continue.json`**:
+```json
+{
+  "models": [
+    {
+      "title": "DevOps Specialist",
+      "provider": "ollama", 
+      "model": "deepseek-coder-v2:lite-instruct-q5_K_M"
+    }
+  ],
+  "systemMessage": "You are a senior DevOps engineer specializing in k3s, Ansible, ArgoCD, and GitHub Actions. Always follow the exact project structure from inventory/, playbooks/, roles/, and helm/ directories. Use Ubuntu/Debian package names and k3s best practices.",
+  "customCommands": [
+    {
+      "name": "k3s-role",
+      "prompt": "Create Ansible role structure for {{ $SELECTION }} following my k3s-homelab/roles/ pattern"
+    }
+  ]
+}
+```
+
+## **6. Keybindings & Usage (Your Daily Workflow)**
+
+| Action | Shortcut | Use Case |
+|--------|----------|----------|
+| **Chat** | `Ctrl+L` | Ask about selected code/Ansible playbook |
+| **Edit** | `Ctrl+I` | "Refactor this GitHub Action for matrix testing" |
+| **Autocomplete** | `Tab` | Inline code completion (CodeLlama) |
+| **Explain** | `Ctrl+Shift+P` → "Explain" | "Explain this ArgoCD Application manifest" |
+| **Generate** | `Ctrl+Shift+P` → "Generate" | "Generate Helm values for docker-registry" |
+
+## **7. WSL2 Remote Development (Recommended)**
+
+```bash
+# Open project in WSL2 VSCode
+code --folder-uri vscode-remote://wsl+/home/user/k3s-homelab
+```
+
+**Benefits on P16**:
+- ✅ Full NVIDIA GPU passthrough
+- ✅ All 85GB models accessible  
+- ✅ Docker integration with k3s registry
+- ✅ Terminal runs in WSL2 Ubuntu
+
+## **8. Model Switcher Sidebar**
+
+After setup, you'll see **Continue sidebar** (left panel):
+```
+📱 Models
+├─ DeepSeek Coder V2 (Primary)  ← 45-60 t/s
+├─ Phi-3.5 MoE (Fast)           ← 80+ t/s  
+├─ Llama 3.2 Vision (Debug)     ← 30-40 t/s
+└─ 💾 Manage Models...
+```
+
+**Hot-switch models** without restart.
+
+## **9. Example Prompts for Your k3s Project**
+
+```
+# Selected: inventory/hosts.yml
+"Add a new worker node following existing pattern"
+
+# Selected: playbooks/02-k3s-cluster.yml  
+"Optimize for HA with 3 masters"
+
+# Selected: .github/workflows/ci.yml
+"Add parallel matrix testing for amd64/arm64"
+
+# Empty file → Custom Command
+"Generate complete ArgoCD Application for docker-registry helm chart"
+```
+
+## **10. Quick Start (2 minutes)**
+
+```bash
+# 1. Ensure Ollama running
+wsl docker start ollama
+
+# 2. Open project in VSCode WSL
+code k3s-homelab
+
+# 3. Install Continue extension
+Ctrl+Shift+X → "Continue" → Install
+
+# 4. Open Continue config (Ctrl+Shift+P → "Continue: Open config.json")
+# Copy the config above
+
+# 5. Test: Select any YAML → Ctrl+L → "Explain this playbook"
+```
+
+## **P16 Performance Expectations**
+
+```
+Model Switching: Instant (<1s)
+Chat Response: 45-60 tokens/sec (DeepSeek primary)
+Autocomplete: 80+ tokens/sec (Phi-3.5)
+Vision (screenshots): 30 tokens/sec
+Memory Usage: 14GB (single model) → Perfect for 64GB RAM
+```
+
+**Your P16 + WSL2 + Continue.dev = Ultimate DevOps AI workstation.** Ready for k3s, Ansible, ArgoCD development with instant context-aware assistance across your entire 85GB model library.
