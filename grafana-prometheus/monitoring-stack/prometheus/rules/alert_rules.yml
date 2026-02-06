@@ -1,0 +1,36 @@
+alert:
+  - alert: HighCPUUsage
+    expr: sum(rate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) < 0.2
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High CPU usage detected on {{ $labels.instance }}"
+      description: "CPU usage is above 80% for more than 5 minutes."
+
+  - alert: HighMemoryUsage
+    expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes > 0.8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High memory usage detected on {{ $labels.instance }}"
+      description: "Memory usage is above 80% for more than 5 minutes."
+
+  - alert: HighDiskUsage
+    expr: (node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes > 0.9
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High disk usage detected on {{ $labels.instance }}"
+      description: "Disk usage is above 90% for more than 5 minutes."
+
+  - alert: HighNetworkTraffic
+    expr: rate(node_network_receive_bytes_total[5m]) > 1000000
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High network traffic detected on {{ $labels.instance }}"
+      description: "Network receive rate is above 1MB/s for more than 5 minutes."

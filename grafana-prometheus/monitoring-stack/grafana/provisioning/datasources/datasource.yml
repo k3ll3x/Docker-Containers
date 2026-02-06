@@ -1,0 +1,12 @@
+datasources:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    jsonData:
+      timeInterval: "5s"
+      tlsSkipVerify: true
+    secureJsonData:
+      tlsCACert: ""
+      tlsCert: ""
+      tlsKey: ""

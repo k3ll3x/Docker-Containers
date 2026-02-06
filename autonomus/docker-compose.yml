@@ -8,9 +8,7 @@ services:
     extends:
       file: tuix.yml
       service: tuix
-      network_mode: "host"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+#      network_mode: "host"
 
 
 volumes:

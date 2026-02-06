@@ -1,0 +1,95 @@
+{
+  "annotations": {
+    "title": "Node Exporter",
+    "tags": ["node", "exporter", "system"],
+    "version": 1,
+    "schemaVersion": 16,
+    "style": {
+      "colors": {
+        "background": "#ffffff",
+        "text": "#000000"
+      }
+    }
+  },
+  "panels": [
+    {
+      "type": "graph",
+      "title": "CPU Usage",
+      "targets": [
+        {
+          "expr": "100 - avg(irate(node_cpu_seconds_total{mode='idle'}[5m])) * 100",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "percent",
+          "label": "CPU Usage",
+          "min": 0,
+          "max": 100
+        },
+        {
+          "format": "short"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Memory Usage",
+      "targets": [
+        {
+          "expr": "1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)",
+          "legendFormat": "{{instance}}",
+          "refId": "B"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "percent",
+          "label": "Memory Usage",
+          "min": 0,
+          "max": 100
+        },
+        {
+          "format": "short"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Network Traffic",
+      "targets": [
+        {
+          "expr": "rate(node_network_receive_bytes_total[5m])",
+          "legendFormat": "{{interface}} Receive",
+          "refId": "C"
+        },
+        {
+          "expr": "rate(node_network_transmit_bytes_total[5m])",
+          "legendFormat": "{{interface}} Transmit",
+          "refId": "D"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": "Network Traffic",
+          "min": 0
+        },
+        {
+          "format": "short"
+        }
+      ]
+    }
+  ]
+}

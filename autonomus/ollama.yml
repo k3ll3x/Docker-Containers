@@ -16,6 +16,7 @@ services:
       - HSA_OVERRIDE_GFX_VERSION=10.3.0
       - HIP_VISIBLE_DEVICES=0
       # Optional Ollama config
+      - OLLAMA_HOST=0.0.0.0
       - OLLAMA_NUM_PARALLEL=4
       - OLLAMA_MAX_LOADED_MODELS=1
     restart: unless-stopped
